@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg|add}}</div>
+        <div>{{msg|add2}}</div>
+        <div>{{time | format('yyyy-MM-dd')}}</div>
+    </div>
+    <script>
+        // 全局过滤器
+        Vue.filter('add', function (data) {
+            return ++data
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 1,
+                time: new Date(),
+            },
+            // 局部过滤器
+            filters: {
+                add2: function (data) {
+                    return 2 + data
+                },
+                format: function (value, arg) {
+                    if (arg == 'yyyy-MM-dd') {
+                        var y = value.getFullYear();
+                        var M = value.getMonth() + 1;
+                        var d = value.getDate();
+                        return y + '-' + M + '-' + d
+
+                    }
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

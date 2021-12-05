@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件插槽</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<div id="app">
+    <div>父组件</div>
+    <strong>高亮标签</strong>
+    <alert-box>父组件模板中的内容将会传给子组件</alert-box>
+    <alert-box></alert-box>
+
+</div>
+<script>
+    // 组件插槽指父组件向子组件传递内容（模板的内容）
+    // 子组件中会预留一个位置，用来存放父组件模板中的内容
+    Vue.component('alert-box', {
+        data: function () {
+            return {
+                msg: '子组件中的数据'
+            }
+        },
+        template: `
+        <div>
+            <div>{{msg}}</div>
+            <slot>此处为默认内容，若父组件标签没有内容将会显示此，否则会被替换</slot>
+        </div>
+        `
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+    })
+</script>
+
+<body>
+
+</body>
+
+</html>

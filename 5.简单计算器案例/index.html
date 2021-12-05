@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div class="add" style="width: 200px; margin: 20px auto; padding: 20px; border: 1px black solid;">
+        <h2>简单计算器</h2>
+        <h2 v-text='result' style="width: 160px;height: 30px; border: 1px black solid;"></h2>
+        <div>
+            <span>数值A：</span><input type="text" v-model='a'>
+        </div>
+        <div>
+            <span>数值B：</span><input type="text" v-model='b'>
+        </div>
+
+        <button v-on:click='and'>计算</button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '.add',
+            data: {
+                a: '',
+                b: '',
+                result: ''
+            },
+            methods: {
+                and: function () {
+                    this.result = parseInt(this.a) + parseInt(this.b)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

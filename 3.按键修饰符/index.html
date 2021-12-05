@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按键修饰符</title>
+    <script src="/lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div class="add">
+        用户名：
+        <input type="text" v-model='uname' v-on:keyup.delete='pname'>
+        密码：
+        <input type="password" v-model='upassword' v-on:keyup.enter='ppassword'>
+        <input type="submit" v-on:click.prevent='ppassword' value="登录">
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '.add',
+            data: {
+                uname: '',
+                upassword: '',
+            },
+            // 方法实现加一
+            methods: {
+                pname: function () {
+                    this.uname = '';
+                    console.log('1234');
+                },
+                ppassword: function () {
+                    console.log(this.uname);
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>

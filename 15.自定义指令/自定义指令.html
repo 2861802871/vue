@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title> 自定义指令</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-focus v-block='{block:"block"}'>
+    // 自定义带参数的指令用法
+    <input type="text" v-focus v-color='msg' v-block='{block:"block"}'>
+    <input type="text" v-focus v-color='{color:"red"}' v-block='{block:"block"}'>
+    <input type="text" v-focus v-tcolor='{color:"white"}' v-block='{block:"block"}' v-color='{color:"green"}'>
+
+
+  </div>
+  <script type="text/javascript" src="./lib/vue.min.js  "></script>
+  <script type="text/javascript">
+    // 自定义指令
+    Vue.directive('focus', {
+      inserted: function (el) {
+        el.focus();
+      }
+    })
+    // 自定义带参数的指令
+    Vue.directive('color', {
+      inserted: function (el, data) {
+        // 根据指令参数设置背景色
+        el.style.backgroundColor = data.value.color;
+        console.log(data.value.color);
+        console.log(data.name);
+      }
+    })
+    //表单基本操作
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: {
+          color: 'greenYellow'
+        }
+      },
+      methods: {
+      },
+      // 自定义局部指令
+      directives: {
+        // 指令不能大写？
+        color: {
+          inserted: function (el, data) {
+            el.style.backgroundColor = data.value.color;
+          }
+        },
+        // 转换块元素
+        block: {
+          inserted: function (el, data) {
+            el.style.display = data.value.block;
+            el.style.margin = '10px'
+
+          }
+        },
+        tcolor: {
+          inserted: function (el, data) {
+            el.style.color = data.value.color
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

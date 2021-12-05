@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .active {
+        width: 100px;
+        border: 2px blue solid;
+    }
+
+    .else {
+        width: 100px;
+        background-color: greenYellow;
+        color: white;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <!-- is开头 -->
+        <div v-bind:style="{color:colorData}">样式测试</div>
+        <div :style='objStyle'>多属性简写</div>
+        <!-- 多属性重复将进行覆盖 -->
+        <div :style=[objStyle,overridesStyle]>数组形式</div>
+        <button v-on:click='handle1' style="cursor:pointer;margin-top: 20px;color: blue;">切换为蓝色</button>
+    </div>
+    <script src=" ./lib/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#box',
+            data: {
+                colorData: 'green',
+                objStyle: {
+                    width: '200px',
+                    height: '200px',
+                    background: 'pink',
+                    color: 'green',
+                },
+                overridesStyle: {
+                    'margin-top': '20px',
+                    color: 'green',
+                },
+            },
+            methods: {
+                handle1: function () {
+                    this.colorData = 'blue';
+                    this.objStyle.color = 'blue';
+                    this.overridesStyle.color = 'blue';
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>

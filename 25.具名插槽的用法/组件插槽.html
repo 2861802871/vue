@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>具名插槽的用法</title>
+    <script src="./vue.min.js"></script>
+</head>
+<div id="app">
+    <div>父组件</div>
+    <alert-box>
+        名字不同的标签随意交换内容位置不变
+        <p slot='hander'>标题信息</p>
+        <p slot='main'>主要信息1</p>
+        <p slot='main'>主要信息2</p>
+        <p slot='main'>主要信息3</p>
+        <p slot='footer'>底部信息</p>
+    </alert-box>
+
+    template标签：(临时包裹信息不会渲染到页面)
+    <alert-box>
+        <template slot='hander'>
+            <p>标题</p>
+        </template>
+        <template slot='main'>
+            <p>内容1</p>
+            <p>内容2</p>
+            <p>内容3</p>
+            <p>内容4</p>
+            <p>内容5</p>
+        </template>
+        <template slot='footer'>
+            <p>底部</p>
+        </template>
+    </alert-box>
+</div>
+<script>
+    // 具有名字的插槽
+    // 组件插槽指父组件向子组件传递内容（模板的内容）
+    // 子组件中会预留一个位置，用来存放父组件模板中的内容
+    Vue.component('alert-box', {
+        data: function () {
+            return {
+                msg: '子组件中的数据'
+            }
+        },
+        template: `
+        <div>
+            <div>{{msg}}</div>
+            <slot>此处为默认内容，若父组件标签没有内容将会显示此，否则会被替换</slot>
+            <hander>
+                <slot name='hander'></slot>
+            </hander>
+            <main>
+                <slot name='main'></slot>
+            </main>
+            <footer>
+                <slot name='footer'></slot>
+            </footer>
+        </div>
+        `
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+    })
+</script>
+
+<body>
+
+</body>
+
+</html>

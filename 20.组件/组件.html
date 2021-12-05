@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件</title>
+    <script src="./lib/vue.min.js"></script>
+    <style>
+        .btn {
+            color: rgb(249, 250, 249);
+            background-color: green;
+        }
+    </style>
+</head>
+<div id="app">
+    <!-- 调用组件 -->
+    <button-count></button-count>
+    <button-count></button-count>
+    <button-count></button-count>
+
+    <!-- 局部组件测试 -->
+    <div-ceshi></div-ceshi>
+</div>
+
+<body>
+    <script>
+        // 注册组件
+        Vue.component('button-count', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            // 模板必须有一点根元素即，有一个共同父级，可以用一个div把模板包裹起来
+            //可以是模板字符串  ：`字符串`  -命名法通用
+            template: `<div><button class="btn" @click="handle">点击了{{count}}次</button><button class="btn" @click="handle">按钮</button>
+                <HelloWord></HelloWord>
+                </div>`,
+            methods: {
+                handle: function () {
+                    this.count++;
+                }
+            }
+        });
+
+        // 驼峰命名法注册组件 只能在组件中使用不能在HTML中用
+        Vue.component('HelloWord', {
+            data: function () {
+                return {
+                    msg: 'hellow word',
+                }
+            },
+            template: `<div>{{msg}}</div>`
+
+        })
+        var ceshi = {
+            data: function () {
+                return {
+                    msg: '局部组件测试'
+                }
+            },
+            template: `<div>{{msg}}</div>`,
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: '',
+            methods: {},
+
+            // 局部组件注册
+            components: {
+                'div-ceshi': ceshi
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>taba栏切换 切换图片</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* #box {
+            border: 2px green solid;
+        } */
+        ::-webkit-scrollbar {
+
+            display: none;
+            /* Chrome Safari */
+
+        }
+
+        div {
+            overflow: hidden;
+        }
+
+        #box ul {
+            position: fixed;
+            left: 600px;
+
+        }
+
+        li {
+            cursor: pointer;
+            list-style-type: none;
+            float: left;
+            margin: 10px;
+            padding: 5px;
+            color: white;
+            background-color: rgb(48, 70, 16);
+        }
+
+        .imgStyle {
+            display: none;
+
+        }
+
+        .current {
+            display: block;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+<div id="box">
+    <div class="tab">
+        <ul>
+            <li :key='item.id' v-for='(item,index) in list' @click='handle(index)'>{{item.title}}</li>
+            <!-- <li>orgin</li>
+            <li>lemon</li> -->
+        </ul>
+        <div class="imgStyle" :key='item.id' v-for='(item,index) in list' :class='index==currentIndex?"current":""'>
+            <img v-bind:src="item.path" alt="">
+        </div>
+    </div>
+</div>
+</style>
+
+<body>
+    <script src=" ./lib/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#box',
+            data: {
+                currentIndex: 0,
+                current: 'current',
+                list: [{
+                    id: 0,
+                    title: 'apple',
+                    path: './img/BingWallpape1r.jpg'
+                }, {
+                    id: 1,
+                    title: 'orgin',
+                    path: './img/BingWallpaper.jpg'
+                }, {
+                    id: 2,
+                    title: 'lemon',
+                    path: './img/d7e563b237acfe0_size514_w1920_h1080.jpg'
+                },
+                {
+                    id: 3,
+                    title: 'dream',
+                    path: './img/dd64aac0061e86c72c0ea4c7df0c8c7e.jpg'
+                },
+                {
+                    id: 4,
+                    title: 'start',
+                    path: './img/BingWallpaper3.jpg'
+                },]
+            },
+            methods: {
+                // 点击事件处理方法 ，改变index值
+                handle: function (index) {
+                    this.currentIndex = index;
+                },
+
+            }
+        })
+    </script>
+</body>
+
+</html>

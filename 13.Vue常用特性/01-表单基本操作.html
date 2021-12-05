@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title> 表单基本操作</title>
+  <style type="text/css">
+    form div {
+      height: 40px;
+      line-height: 40px;
+    }
+
+    form div:nth-child(4) {
+      height: auto;
+    }
+
+    form div span:first-child {
+      display: inline-block;
+      width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <form action="http://itcast.cn">
+      <div>
+        <span>姓名：</span>
+        <span>
+          <input type="text" v-model='uname'>
+        </span>
+      </div>
+      <div>
+        <span>性别：</span>
+        <span>
+          <input type="radio" id="male" value="0" v-model='gender'>
+          <label for="male">男</label>
+          <input type="radio" id="female" value="1" v-model='gender'>
+          <label for="female">女</label>
+        </span>
+      </div>
+      单选用数，多选用数组
+
+      <div>
+        <span>爱好：</span>
+        <input type="checkbox" id="ball" value="1" v-model='hobby'>
+        <label for="ball">篮球</label>
+        <input type="checkbox" id="sing" value="2" v-model='hobby'>
+        <label for="sing">唱歌</label>
+        <input type="checkbox" id="code" value="3" v-model='hobby'>
+        <label for="code">写BUG</label>
+        <input type="checkbox" id="wBUG" value="4" v-model='hobby'>
+        <label for="wBUG">改BUG</label>
+      </div>
+      单选用数，多选用数组
+      <div>
+        <span>职业：</span>
+        <!-- multiple='ture' 改为多选 -->
+        <select v-model='occupation'>
+          <option value="0">请选择职业...</option>
+          <option value="1">软件工程师</option>
+          <option value="2">前端工程师</option>
+          <option value="3">UI设计师</option>
+        </select>
+      </div>
+      <div>
+        <span>个人简介：</span>
+        <textarea v-model='desc'></textarea>
+      </div>
+      <div>
+        <input type="submit" value="提交" @click.prevent='handle'>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript" src="./lib/vue.min.js  "></script>
+  <script type="text/javascript">
+    /*
+      表单基本操作
+    */
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        uname: '小冰',
+        gender: 1,
+        hobby: ['1', '2', '3'],
+        // 单选用数，多选用数组
+        occupation: 3,
+        // occupation: ['1', '2',],
+        desc: '姓名：小冰\n体重：45kg\n'
+      },
+      methods: {
+        handle: function () {
+
+          console.log(this.uname)
+          console.log(this.gender == 0 ? '男' : '女')
+          console.log(this.hobby.toString())
+          console.log(this.occupation.toString())
+          console.log(this.desc)
+          console.log('提交成功！');
+
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

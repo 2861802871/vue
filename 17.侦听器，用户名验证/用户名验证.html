@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户名验证</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app" style="margin-left:20px;">
+        用户名：<input type="text" v-focus placeholder="小冰" v-model.lazy='uname'><span v-color>{{tip}}</span>
+    </div>
+    <script>
+
+        // Vue.directive('focus', {
+        //     inserted: function (el) {
+        //         el.focus();
+        //     }
+        // })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                uname: '',
+                tip: '',
+                color: 'green',
+            },
+            // 监听器
+            watch: {
+                uname: function (val) {
+                    //调用后台接口
+                    this.checkName(val);
+                    this.tip = '正在验证....'
+                },
+            },
+            methods: {
+                checkName: function (uname) {
+                    var that = this;
+                    // 定时器模拟后台接口
+                    setTimeout(function () {
+                        if (uname == 'admin' | uname == '小冰') {
+                            that.tip = '用户名已被占用！';
+                            that.color = 'red'
+                        }
+                        else {
+                            that.tip = '用户名可用';
+                            that.color = 'green'
+                        }
+                    }, 2000)
+                }
+            },
+            // 获得焦点指令
+            directives: {
+                focus: {
+                    inserted: function (el) {
+                        el.focus();
+                    }
+                },
+                color: {
+                    inserted: function (el) {
+                        console.log(this.color);
+                        // el.style.color = 'red';
+                    }
+                }
+            },
+            // 计算属性
+            computed: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>

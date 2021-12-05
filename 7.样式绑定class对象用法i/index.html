@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .active {
+        width: 100px;
+        border: 2px blue solid;
+    }
+
+    .else {
+        width: 100px;
+        background-color: red;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <!-- is开头 -->
+        <div v-bind:class="{active:isActive,else:isElse}">123</div>
+
+        <button v-on:click='handle' style="cursor:pointer;">切换</button>
+    </div>
+    <script src="./lib/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#box',
+            data: {
+                isActive: true,
+                isElse: 0,
+            },
+            methods: {
+                handle: function () {
+                    // 取反  真假取反
+                    this.isActive = !this.isActive;
+                    this.isElse = ~this.isElse;
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>

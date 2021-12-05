@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+</style>
+
+<body>
+    <div id="box">
+        <!-- 分支结构 -->
+        <!-- 元素是否渲染 -->
+        <div v-if="score>=90">优秀</div>
+        <div v-if="score<90&&score>=70">良好</div>
+        <div v-if="score<70&&score>=60">一般</div>
+        <div v-if="score<60">努力</div>
+        <!-- 元素是否显示 -->
+        <div v-show='flag'>测试v-show</div>
+        <button @click='handel'>显示切换</button>
+
+        <!-- 循环结构 遍历数组-->
+        <div v-for='(item,index) in fruits'>{{index+'.'+item}}</div>
+        <!-- key帮助vue提升性能 -->
+        <div :key='item.id' v-if='score==90' v-for='item in myfruits'>
+            <!-- <span v-for="e in {{item}}">{{e}}</span> -->
+            <span>{{item.ename}}:</span>
+            <span>{{item.cname}}</span>
+        </div>
+
+        <div>对象的访问</div>
+        <div v-for='(v,k,i) in dataa'>{{i+'.'+k+':'+v}}</div>
+        <script src=" ./lib/vue.min.js"></script>
+        <script>
+            var dataa = {
+                uname: 'zhansan',
+                age: 18,
+                weight: 90
+            }
+            for (var key in dataa) {
+                console.log(':' + dataa[key]);
+            }
+            var vm = new Vue({
+                el: '#box',
+                data: {
+                    score: 90,
+                    flag: true,
+                    fruits: ['apple', 'orange', 'banana'],
+                    myfruits: [{
+                        id: 1,
+                        ename: 'apple',
+                        cname: '苹果'
+                    },
+                    {
+                        id: 2,
+                        ename: 'orange',
+                        cname: '橘子'
+                    },
+                    {
+                        id: 3,
+                        ename: 'banana',
+                        cname: '香蕉'
+                    },
+                    ],
+                    dataa: {
+                        uname: 'zhansan',
+                        age: 18,
+                        weight: 90
+                    },
+                },
+                methods: {
+                    handel: function () {
+                        this.flag = !this.flag;
+                    }
+                },
+            })
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指令</title>
+</head>
+<style>
+    body {
+        background-color: rgb(233, 233, 233);
+    }
+
+    h1 {
+        margin: 0;
+        padding: 0;
+        color: red;
+    }
+
+    #btn {
+        width: 100px;
+        border: 1px rgb(49, 45, 45) solid;
+        color: rgb(93, 215, 236);
+        background-color: rgb(41, 41, 41);
+        text-align: left;
+    }
+
+    .btn1 {
+        border: none;
+        color: rgb(93, 215, 236);
+        background-color: rgb(41, 41, 41);
+    }
+</style>
+
+<body>
+    <div class="add">
+        <!-- 插值 -->
+        <div>{{msg}}</div>
+        <!-- 以文本的形式填充 没有闪烁-->
+        <div v-text='msg'></div>
+        <!-- 填充HTML片段   {{msg1}}-->
+        <div v-html='msg1'></div>
+        <!-- 显示原始信息 （跳过编译过程直接显示出来） <h1>HTML</h1>-->
+        <div v-pre>{{msg1}}</div>
+        <!-- <div v-text>{{msg1}}</div> -->
+        <!-- 只编译一次 再改不显示（应用于后续不需要修改的数据  提高性能） -->
+        <div v-once>{{msg2}}</div>
+
+        <!-- 数据双向绑定主要用在表单输入域中 msg值随输入变化而变化-->
+        <div>
+            <input type="text" v-model='msg' value="name">
+        </div>
+
+        <!-- on事件绑定 -->
+        <div id="btn">{{num}}</div>
+        <!-- 完整写法 -->
+        <input class="btn1" type="button" v-on:click='num++' value="点击加一">
+        <!-- 简写 -->
+        <input class="btn1" type="button" @click='num--' value="点击减一">
+        <!-- 方法实现num加一 并传递参数1234-->
+        <input class="btn1" type="button" @click='num1(1234/,$event)' value="点击加一">
+        <!-- 方法实现num加一 -->
+        <input class="btn1" type="button" @click='num0' value="点击加一">
+    </div>
+    <script src="./lib/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '.add',
+            data: {
+                msg: 'Hello vue',
+                msg1: '<h1>HTML</h1>',
+                msg2: 'hello',
+                num: '1',
+            },
+            // 方法实现加一
+            methods: {
+                num0: function (event) {
+                    // 标签值
+                    console.log(event.target.value);
+                    this.num++;
+                },
+                num1: function (p, event) {
+                    console.log(p);
+                    // 标签名
+                    console.log(event.target.tagName);
+                    // 类型
+                    console.log(event.target.type);
+                    // 标签内容
+                    console.log(event.target.value);
+                    this.num++;
+                },
+            }
+
+        })
+    </script>
+</body>
+
+</html>

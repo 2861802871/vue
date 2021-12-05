@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<style>
+    .grid {
+        margin: auto;
+        width: 800px;
+        text-align: center;
+    }
+
+    .grid table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .grid th,
+    td {
+        padding: 10;
+        border: 1px dashed orange;
+        height: 35px;
+        line-height: 35px;
+    }
+
+    .grid th {
+        background-color: orange;
+    }
+
+    .in {
+        background-color: orange;
+
+    }
+
+    .in input {
+        width: 180px;
+    }
+</style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="grid">
+            <div class="in">
+                <div style="margin: 10px;">欢迎来到图书管理系统</div>
+                <span for='id'>编号:</span><input v-focus :disabled='flag' id='id' type="text" v-model='id'>
+                <span for='name'>名称:</span><input id='name' type="text" v-model='name'>
+                <span for='author'>作者:</span><input id='author' type="text" v-model='author'>
+                <button style="margin-left: 10px;" :disabled='submitFlag' @click='add'>提交 </button>
+                <div style="border-top: 1px solid black;border-bottom: 2px solid rgb(102, 102, 102);">书籍总量：{{booksSum}}
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>作者</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :key='item.id' v-for='(item,index) in books'>
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.author}}</td>
+                        <td>{{item.date|format('yyyy年MM月dd hh:mm:ss')}}</td>
+                        <td>
+                            <a href="javacript:;" @click.prevent='toEdit(item.id)'>修改</a>
+                            <span>|</span>
+                            <a href="javacript:;" @click.prevent='del(item.id)'>删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        // 自定义指令
+        Vue.directive('focus', {
+            inserted: function (el) {
+                el.focus();
+            }
+        });
+        // 时间过滤器
+        Vue.filter('format', function (value, arg) {
+            function dateFormat(date, format) {
+                if (typeof date === "string") {
+                    var mts = date.match(/(\/Date\((\d+)\)\/)/);
+                    if (mts && mts.length >= 3) {
+                        date = parseInt(mts[2]);
+                    }
+                }
+                date = new Date(date);
+                if (!date || date.toUTCString() == "Invalid Date") {
+                    return "";
+                }
+                var map = {
+                    "M": date.getMonth() + 1, //月份 
+                    "d": date.getDate(), //日 
+                    "h": date.getHours(), //小时 
+                    "m": date.getMinutes(), //分 
+                    "s": date.getSeconds(), //秒 
+                    "q": Math.floor((date.getMonth() + 3) / 3), //季度 
+                    "S": date.getMilliseconds() //毫秒 
+                };
+                format = format.replace(/([yMdhmsqS])+/g, function (all, t) {
+                    var v = map[t];
+                    if (v !== undefined) {
+                        if (all.length > 1) {
+                            v = '0' + v;
+                            v = v.substr(v.length - 2);
+                        }
+                        return v;
+                    } else if (t === 'y') {
+                        return (date.getFullYear() + '').substr(4 - all.length);
+                    }
+                    return all;
+                });
+                return format;
+            }
+            return dateFormat(value, arg);
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                id: '',
+                name: '',
+                author: '',
+                date: '',
+                flag: false,
+                submitFlag: false,
+                // booksSum: 20,
+                books: []
+            },
+            methods: {
+                add: function () {
+                    // 判断信息决定是否添加
+                    if (this.id == '' | this.name == '' | this.author == '') {
+                        return alert('信息不全！')
+                    }
+                    if (this.flag) {
+                        // 重难点  some()遍历数组，筛选出id和输入域中id相等的数组对象
+                        //=>表达主体 让this.id指向 add的id
+                        this.books.some((item) => {
+                            if (item.id == this.id) {
+                                item.name = this.name;
+                                item.author = this.author;
+
+                                // 匹配到合适的,跳出循环
+                                return true;
+
+                            }
+                        })
+                        this.flag = false;
+                    } else {
+                        // 添加图书对象
+                        // 方法一
+                        var book = {};
+                        book.id = this.id;
+                        book.name = this.name;
+                        book.author = this.author;
+                        this.books.push(book);
+
+                        // 简写
+                        // this.books.push({
+                        //     id: this.id,
+                        //     name: this.name,
+                        //     author: this.author,
+                        // });
+                    }
+
+
+                    this.id = '';
+                    this.name = '';
+                    this.author = '';
+                },
+                toEdit: function (id) {
+                    // 重难点  filter(function(){条件})
+                    var book = this.books.filter(function (item) {
+                        return item.id == id
+                    })
+                    // 将数据填入输入域中
+                    console.log(book);
+                    this.id = book[0].id;
+                    this.name = book[0].name;
+                    this.author = book[0].author;
+                    this.flag = true;
+
+                },
+                del: function (id) {
+                    // 方法一：在原来的数组中修改 findIndex()查找索引，splice()删除
+                    // splice(位置，删除几个，添加的元素写在后面、。)
+
+                    // var index = this.books.findIndex(function (item) {
+                    //     return item.id == id;
+                    // });
+                    // this.books.splice(index, 1)
+                    //-----------------------------------------
+
+                    // 方法二：filter()方法 (新建一个数组，不改变原来数组) 排除要删除的，保留不删除的
+
+                    this.books = this.books.filter(function (item) {
+                        return item.id != id
+                    })
+
+                }
+            },
+            // 计算属性：统计一共多少本书
+            computed: {
+                booksSum: function () {
+                    return this.books.length;
+                }
+            },
+            // 侦听name判断库中是否存在该书
+            watch: {
+                name: function (val) {
+                    var flag = this.books.some(function (item) {
+                        return item.name == val;
+                    })
+                    if (flag) {
+                        this.submitFlag = true;
+                    } else {
+                        this.submitFlag = false;
+                    }
+                }
+            },
+            // 生命周期mounted:function(){}
+            //生命周期钩子函数触发的时候，说明模板已就绪
+            //一般此时获取后台数据，然后把数据填充到模板
+            mounted: function () {
+                var data = [{
+                    id: 1,
+                    name: '三国演义',
+                    author: '罗贯中',
+                    date: new Date(),
+                }, {
+                    id: 2,
+                    name: '水浒传',
+                    author: '施耐庵',
+                    date: new Date(),
+                }, {
+                    id: 3,
+                    name: '红楼梦',
+                    author: '曹雪芹',
+                    date: new Date(),
+                }, {
+                    id: 4,
+                    name: '西游记',
+                    author: '吴承恩',
+                    date: new Date(),
+                }, {
+                    id: 5,
+                    name: '活着',
+                    author: '余华',
+                    date: new Date(),
+                }, {
+                    id: 6,
+                    name: '兰陵笑笑生',
+                    author: '兰陵笑笑生',
+                    date: new Date(),
+                }, {
+                    id: 7,
+                    name: '老人与海',
+                    author: '海明威',
+                    date: new Date(),
+                }];
+                this.books = data;
+            }
+
+        })
+
+    </script>
+</body>
+
+</html>

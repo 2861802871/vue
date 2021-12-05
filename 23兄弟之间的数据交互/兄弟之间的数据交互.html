@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兄弟间的数据交互</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{pmsg}}</div>
+        <div><button @click='handle("已销毁点击无效")'>销毁事件</button></div>
+        <first-borther></first-borther>
+        <second-borther></second-borther>
+        <div>{{data}}</div>
+    </div>
+    <script>
+        // 通过事件中心通信var eventHub = new Vue()
+        // var enentHub = new Vue();
+        // // 新建
+        // eventHub.$on('name', data)
+        // // 销毁
+        // eventHub.$off('name')
+        // // 触发
+        // eventHub.$emit('name', data)
+
+        var eventHub = new Vue();
+
+        Vue.component('FirstBorther', {
+            data: function () {
+                return {
+                    fmsg: '第一个兄弟的数据',
+                    num: 0
+                }
+            },
+            template: `
+            <div>
+            <div>{{fmsg}}</div>
+            <div>一：{{num}}</div>
+            <button @click='handle'>点击二+2</button>
+            </div>
+            `,
+            methods: {
+                handle: function () {
+                    eventHub.$emit('second', 2)
+
+                }
+            },
+            mounted: function () {
+                eventHub.$on('first', (value) => {
+                    this.num += value;
+                })
+            }
+        });
+
+
+
+        Vue.component('SecondBorther', {
+            data: function () {
+                return {
+                    smsg: '第二个兄弟的数据',
+                    num: 0
+                }
+            },
+            template: `
+            <div>
+            <div>{{smsg}}</div>
+            <div>二：{{num}}</div>
+            <button @click='handle'>点击一+1</button>
+            </div>
+            `,
+            methods: {
+                handle: function () {
+                    // 触发兄弟监听事件
+                    eventHub.$emit('first', 1)
+                }
+            },
+            mounted: function () {
+                // 监听事件
+                eventHub.$on('second', (value) => {
+                    this.num += value;
+                })
+            }
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                pmsg: '父级的数据',
+                data: ''
+            },
+            methods: {
+                handle: function (val) {
+                    this.data = val;
+                    eventHub.$off('first');
+                    eventHub.$off('second');
+                }
+
+            },
+        })
+    </script>
+</body>
+
+</html>

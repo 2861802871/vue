@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子组件向父组件传值</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<style>
+    /* #app {
+        font-size: 10px;
+    } */
+</style>
+
+<body>
+    <div id="app">
+        <div>一、直接操作数据</div>
+        父组件中使用被组组件传递的参数
+        <div :style="{fontSize:fontsize+'px'}">{{pmsg}}:</div>
+        <ul>
+            <li v-for='item in fruit'>{{item}}</li>
+        </ul>
+        事件监听放在子组件标签中：监听enlarge-text事件
+        <son :fruit='fruit' @enlarge-text='handle($event)'></son>
+    </div>
+    <script>
+        // props单向数据流只允许父组件向子组件传递数据
+        // 1.直接操作修改父组件数据（不推荐）
+        Vue.component('son', {
+            props: ['fruit'],
+            data: function () {
+                return {
+                    smsg: '子组件中的数据'
+                }
+            },
+            template: `
+            <div>
+                <div>{{smsg}}</div>
+                <ul>
+                    <li v-for='item in fruit'>{{item}}:</li>
+                </ul>
+                <button @click='fruit.push("柠檬")'>添加</button>
+                <div>
+                    <div>二、通过添加自定义事件的方式</div>
+                    <button @click='$emit("enlarge-text",0.5)'>扩大父组件中的字体大小</button>    
+                </div>
+            </div>
+            `
+        });
+        // 2.通过自定义事件向父组件传递信息，父组件需要监听子组件的传递信息的事件
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                pmsg: '父组件中的数据',
+                fruit: ['苹果', '橘子', '橙子', '南果梨'],
+                fontsize: 15,
+            },
+            methods: {
+                handle: function (event) {
+                    this.fontsize += event;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

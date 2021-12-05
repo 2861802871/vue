@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作用域插槽</title>
+    <script src="./vue.min.js"></script>
+</head>
+<style>
+    .current {
+        color: rgb(105, 105, 2);
+    }
+</style>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <div>父组件对子组件的内容加工处理</div>
+        <div>获取slot :data='item'中绑定的值</slot>
+        </div>
+        <son :fruit='fruit'>
+            <template slot-scope='da'>
+                <strong v-if='da.data.id==2' class='current'>{{da.data.id+da.data.name}}</strong>
+                <strong v-else>{{da.data.id+da.data.name}}</strong>
+            </template>
+
+        </son>
+    </div>
+    <script>
+
+        Vue.component('son', {
+            props: ['fruit'],
+            data: function () {
+                return {
+                    msg: '子组件',
+                }
+            },
+            template: `
+            <div>
+                <div>{{msg}}</div>
+                <li style="list-style:none" :key='index' v-for='(item,index) in fruit'>
+                    <slot :data='item'>{{index+'.'+item.name}}</slot>    
+                </li>    
+            </div>
+            `
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '父组件',
+                fruit: [{ id: 1, name: '苹果' }, { id: 2, name: '橘子' }, { id: 3, name: '橙子' }]
+            },
+        })
+    </script>
+</body>
+
+</html>

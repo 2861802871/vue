@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义按键修饰符</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <h3>自定义按键修饰符*a</h3>
+    <div class="box">
+        <input type="text" placeholder="查询按键键值" v-on:keyup='hand'>
+        <input type="text" placeholder="输入a" @keyup.a='hand'>
+        <input type="text" placeholder="输入q" @keyup.q='hand'>
+        <input type="text" placeholder="输入w" @keyup.w='hand'>
+        <div>键值：{{keyNumber}}</div>
+    </div>
+    <script>
+        // 自定义按键修饰符
+        // 单个定义
+        Vue.config.keyCodes.a = 65
+        Vue.config.keyCodes.b = 66
+        // 以对象的形式定义
+        Vue.config.keyCodes = {
+            q: 81,
+            w: 87,
+        }
+        var vm = new Vue({
+            el: '.box',
+            data: { keyNumber: 0 },
+            methods: {
+                hand: function (event) {
+                    console.log(event.keyCode);
+                    this.keyNumber = event.keyCode
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

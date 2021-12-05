@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <first></first>
+        <second></second>
+        <button @click='handle'>销毁事件</button>
+        <div>{{off}}</div>
+    </div>
+    <script>
+        var hub = new Vue()
+
+        Vue.component('first', {
+            data: function () {
+                return {
+                    msg: '子一数据',
+                    num: 0,
+                }
+            },
+            template: `
+                <div>
+                    <div>{{msg}}</div>
+                    <div>一：{{num}}</div>
+                    <button @click='handle'>点击二+2</button>    
+                </div>
+            `,
+            methods: {
+                handle: function () {
+                    hub.$emit('second', 2)
+                }
+            },
+            mounted: function () {
+                hub.$on('first', (data) => {
+                    this.num += data
+                })
+            }
+        });
+
+        Vue.component('second', {
+            data: function () {
+                return {
+                    msg: '子二数据',
+                    num: 0,
+                }
+            },
+            template: `
+            <div>
+                <div>{{msg}}</div>
+                    <div>二：{{num}}</div>
+                <button @click='handle'>点击一+1</button>    
+            </div>
+            `,
+            methods: {
+                handle: function () {
+                    hub.$emit('first', 1)
+                }
+            },
+            mounted: function () {
+                hub.$on('second', (data) => {
+                    this.num += data
+                })
+            }
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '父级数据',
+                off: ''
+            },
+            methods: {
+                handle: function () {
+                    hub.$off('first')
+                    hub.$off('second')
+                    this.off = '件以销毁，点击事无效'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

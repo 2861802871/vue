@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件间数据传递</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        父组件想子组件传递参数以属性方式传递，属性写在子组件标签中
+        v-bind绑定的属性才有数据类型，否则是字符串类型
+        <son-data :father-data='msg' content='hello' potr='typstring' :ponum='12' :poboo='true' :poarr='poarr'
+            :poobj='poobj'>
+        </son-data>
+    </div>
+    <script>
+        // 父组件想子组件传递参数以属性方式传递
+        Vue.component('son-data', {
+            //标签不能用驼峰命名法可用  - ，不区分小写，propos名字要用引号，propos中用需要将 - 转换为驼峰命名法 
+            props: ['fatherData', 'content', 'potr', 'ponum', 'poboo', 'poarr', 'poobj'],
+            data: function () {
+                return {
+                    msg: '子组件的数据'
+                }
+            },
+            template:
+                `<div>
+                    <div>{{msg + "-" +content +"-"+ fatherData}}</div>
+                    <div>{{typeof potr}}:{{potr}}</div>
+                    <div>{{typeof ponum}}:{{ponum}}</div>
+                    <div>{{typeof poboo}}:{{poboo}}</div>
+                    <div>{{typeof poarr}}:
+                        <ul>
+                            <li v-for='(item,index) in poarr'>{{index}}.{{item}}</li>    
+                        <ul>
+                    </div>
+                    <div>
+                        <ul>
+                           {{typeof poobj}}:
+                           <li v-for='(value,key,index) in poobj'>{{index+"."+key+":"+value}}</li>  
+                        <ul>
+                    </div>
+                </div>`
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '父组件中的数据',
+                poarr: ['橘子', '苹果', '菠萝'],
+                poobj: {
+                    name: '小冰',
+                    age: 18,
+                    gender: 'girl',
+                }
+            },
+        })
+
+
+    </script>
+</body>
+
+</html>
