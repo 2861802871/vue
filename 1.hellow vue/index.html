@@ -14,30 +14,41 @@
 </head>
 
 <body>
+    <div id="content0"></div>
     <div id="msg">
         <div v-clock>{{msg}}</div>
         {{nw}}
     </div>
     <div id="content">{{con}}</div>
+    <div id="content1">姓名：{{name}}</br>年龄：{{age}}</div>
     <script src="vue.min.js"></script>
     <script>
-        var data = 'hello word!';
-        var msg = document.getElementById("msg");
-        msg.innerHTMl = data;
+        var data = '你好 世界 !';
+        var msg = document.getElementById("content0");
+        msg.innerHTML = data;
 
         var vm = new Vue({
             el: '#msg',
             data: {
-                msg: 'hello vue',
-                nw: '乾坤未定你我皆牛马'
+                msg: '你好 世界 !',
+                nw: '如果巅峰留不住'
             }
         })
 
         var content = new Vue({
             el: '#content',
             data: {
-                con: 'hellow vue! hhh'
+                con: '那就进厂包吃住'
             }
+        })
+
+        var vm1 = new Vue({
+            el: '#content1',
+            data: {
+                name: 'xiaobing',
+                age: 18,
+            }
+
         })
     </script>
 </body>

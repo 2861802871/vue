@@ -6,37 +6,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>按键修饰符</title>
-    <script src="/lib/vue.min.js"></script>
 </head>
+<script src="vue.min.js"></script>
 
 <body>
-    <div class="add">
+    <div>
+        <div>delete清除表单数据，回车登录</div>
         用户名：
-        <input type="text" v-model='uname' v-on:keyup.delete='pname'>
+        <!-- 方法名不能和按键名一样 -->
+        <input type="text" v-model='uname' v-on:keyup.delete='deletes' placeholder="用户名">
+
         密码：
-        <input type="password" v-model='upassword' v-on:keyup.enter='ppassword'>
-        <input type="submit" v-on:click.prevent='ppassword' value="登录">
+        <input type="password" v-model='password' v-on:keyup.enter='login' placeholder="密码">
+        <!-- prevent阻止事件默认行为 stop阻止冒泡-->
+        <input type="submit" v-on:click.prevent='login' value="登录">
     </div>
     <script>
         var vm = new Vue({
             el: '.add',
             data: {
                 uname: '',
-                upassword: '',
+                password: '',
             },
             // 方法实现加一
             methods: {
-                pname: function () {
+                deletes: function () {//方法名不能和按键名一样
                     this.uname = '';
-                    console.log('1234');
+                    this.password = '';
+                    console.log('delete清除表单内容');
                 },
-                ppassword: function () {
-                    console.log(this.uname);
+                login: function () {
+                    console.log('用户名：' + this.uname + '\n' + '密码：' + this.password);
                 }
             }
-
         })
     </script>
+
 </body>
 
 </html>

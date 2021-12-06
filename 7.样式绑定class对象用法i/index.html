@@ -9,22 +9,35 @@
 </head>
 <style>
     .active {
+        color: azure;
         width: 100px;
-        border: 2px blue solid;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: rgb(44, 10, 105);
     }
 
     .else {
+        color: azure;
         width: 100px;
-        background-color: red;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: rgb(63, 95, 15);
     }
 </style>
 
 <body>
+    <!-- 一 -->
     <div id="box">
         <!-- is开头 -->
         <div v-bind:class="{active:isActive,else:isElse}">123</div>
-
-        <button v-on:click='handle' style="cursor:pointer;">切换</button>
+        <button v-on:click='handle' style="cursor:pointer;">切换样式</button>
+    </div>
+    <!-- 二 -->
+    <div id="add">
+        <div v-bind:class="{active:isActive,else:isElse}">样式</div>
+        <button v-on:click="handle" style="cursor: pointer;">切换样式</button>
     </div>
     <script src="./lib/vue.min.js"></script>
     <script>
@@ -32,17 +45,30 @@
             el: '#box',
             data: {
                 isActive: true,
-                isElse: 0,
+                isElse: false,
             },
             methods: {
                 handle: function () {
                     // 取反  真假取反
                     this.isActive = !this.isActive;
-                    this.isElse = ~this.isElse;
+                    this.isElse = !this.isElse;
                 }
             }
 
         });
+        var add = new Vue({
+            el: '#add',
+            data: {
+                isActive: false,
+                isElse: true,
+            },
+            methods: {
+                handle: function () {
+                    this.isActive = !this.isActive
+                    this.isElse = !this.isElse
+                }
+            }
+        })
     </script>
 </body>
 

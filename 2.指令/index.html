@@ -34,61 +34,66 @@
 </style>
 
 <body>
-    <div class="add">
-        <!-- 插值 -->
+    <div v-cloak class="add">
+        <!-- 差值 -->
         <div>{{msg}}</div>
-        <!-- 以文本的形式填充 没有闪烁-->
-        <div v-text='msg'></div>
-        <!-- 填充HTML片段   {{msg1}}-->
-        <div v-html='msg1'></div>
+        <!-- 解决闪动问题v-cloak -->
+        <div v-cloak>{{msg0}}</div>
+        <!-- 以文本的形式填充 -->
+        <div v-text='msg1'></div>
+        <!-- 填充HTML片段   {{msg2}}-->
+        <div v-html='msg3'></div>
         <!-- 显示原始信息 （跳过编译过程直接显示出来） <h1>HTML</h1>-->
-        <div v-pre>{{msg1}}</div>
-        <!-- <div v-text>{{msg1}}</div> -->
+        <div v-pre>5.v-pre{{msg4}}显示原始信息 （跳过编译过程直接显示出来,{{不编译}}）</div>
         <!-- 只编译一次 再改不显示（应用于后续不需要修改的数据  提高性能） -->
-        <div v-once>{{msg2}}</div>
-
+        <div v-once>{{msg5}}</div>
         <!-- 数据双向绑定主要用在表单输入域中 msg值随输入变化而变化-->
-        <div>
-            <input type="text" v-model='msg' value="name">
-        </div>
-
-        <!-- on事件绑定 -->
-        <div id="btn">{{num}}</div>
+        <div v-text="msg6"></div>
+        <input type="text" v-model='msg6' placeholder="v-model数据双向绑定">
+        <!-- v-on事件绑定 -->
+        <div id="btn" style="width: 150px;">v-on事件绑定{{msg7}}</div>
         <!-- 完整写法 -->
-        <input class="btn1" type="button" v-on:click='num++' value="点击加一">
+        <!-- <input class="btn1" type="button" v-on:click='num++' value="点击加一"> -->
+        <button class="btn1" v-on:click='msg7++'>属性设置点击加一</button>
         <!-- 简写 -->
-        <input class="btn1" type="button" @click='num--' value="点击减一">
+        <button class="btn1" @click='msg7--'>属性设置点击减一</button>
+
         <!-- 方法实现num加一 并传递参数1234-->
-        <input class="btn1" type="button" @click='num1(1234/,$event)' value="点击加一">
-        <!-- 方法实现num加一 -->
-        <input class="btn1" type="button" @click='num0' value="点击加一">
+        <div>
+            <!-- 参数默认携带事件对象$event 方法中形参接收event-->
+            <button class="btn1" @click='msg7_add'>方法设置点击加一</button>
+            <!-- 传输具体参数和事件对象 msg7_reduce(参数，$event) 需要在方法中用形参接收 事件对象必须放在最后-->
+            <button class="btn1" @click='msg7_reduce("abcd",$event)'>方法设置点击减一</button>
+        </div>
     </div>
     <script src="./lib/vue.min.js"></script>
     <script>
         var vm = new Vue({
             el: '.add',
             data: {
-                msg: 'Hello vue',
-                msg1: '<h1>HTML</h1>',
-                msg2: 'hello',
-                num: '1',
+                msg: '1.Hello vue',
+                msg0: '2.v-cloak解决原码与文本闪动问题',
+                msg1: '3.v-text=""以文本的形式填充',
+                msg3: '4.v-html=""<p>填充HTML片段,并编译出来</p>',
+                msg4: '5.v-pre<p>跳过编译过程直接显示出来</p>',
+                msg5: '6.v-once只编译一次后续修改，不在进行编译',
+                msg6: '7.v-model数据双向绑定',
+                msg7: 1,
             },
             // 方法实现加一
             methods: {
-                num0: function (event) {
+                msg7_add: function (event) {
                     // 标签值
-                    console.log(event.target.value);
-                    this.num++;
+                    console.log(event.target.value);//事件对象
+                    this.msg7++;
                 },
-                num1: function (p, event) {
-                    console.log(p);
-                    // 标签名
-                    console.log(event.target.tagName);
-                    // 类型
-                    console.log(event.target.type);
-                    // 标签内容
-                    console.log(event.target.value);
-                    this.num++;
+                msg7_reduce: function (str, event) {
+                    this.msg7--;
+                    console.log(str);//传递的参数
+                    console.log(event);//事件对象
+                    console.log(event.target.tagName);//事件对象名称"BUTTON"
+                    console.log(event.target.type);//事件类型submit
+                    console.log(event.target.innerHTML);//标签内容
                 },
             }
 

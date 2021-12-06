@@ -22,9 +22,7 @@
 <body>
     <div id="box">
         <!-- is开头 -->
-        <div v-bind:class="[activeClass,elseClase]">样式测试</div>
-
-        <button v-on:click='handle' style="cursor:pointer;">切换</button>
+        <div v-bind:class="[activeClass,elseClase]">样式测试绑定边框背景</div>
     </div>
     <script src="./lib/vue.min.js"></script>
     <script>
@@ -34,12 +32,6 @@
                 activeClass: 'active',
                 elseClase: 'else',
             },
-            methods: {
-                handle: function () {
-                    this.activeClass = ''
-                }
-            }
-
         });
     </script>
 </body>

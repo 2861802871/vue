@@ -8,6 +8,10 @@
     <title>Document</title>
 </head>
 <style>
+    div {
+        margin: 10px;
+    }
+
     .active {
         width: 100px;
         border: 2px blue solid;
@@ -18,6 +22,7 @@
         background-color: red;
     }
 </style>
+<script src="./lib/vue.min.js"></script>
 
 <body>
     <div id="box">
@@ -27,22 +32,22 @@
         <div :class="[addClass,{objClass}]">结合使用</div>
         <button v-on:click='handle' style="cursor:pointer;">切换</button>
     </div>
-    <script src="./lib/vue.min.js"></script>
     <script>
         var vm = new Vue({
             el: '#box',
             data: {
-                addClass: ['active', 'else',],
+                addClass: ['active', 'else',],//默认为true
                 objClass: {
                     active: true,
-                    else: true
+                    else: false
                 },
-                andClass: true,
-                isActive: true
             },
             methods: {
                 handle: function () {
-                    this.activeClass = ''
+                    this.objClass = {
+                        active: false,
+                        else: true
+                    }
                 }
             }
 
