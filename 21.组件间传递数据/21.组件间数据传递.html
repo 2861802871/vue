@@ -12,17 +12,17 @@
 <body>
     <div id="app">
         <div>{{msg}}</div>
-        父组件想子组件传递参数以属性方式传递，属性写在子组件标签中
+        父组件向子组件传递参数以属性方式传递，属性写在子组件标签中
         v-bind绑定的属性才有数据类型，否则是字符串类型
         <son-data :father-data='msg' content='hello' potr='typstring' :ponum='12' :poboo='true' :poarr='poarr'
-            :poobj='poobj'>
+            v-bind:hotdata='hotdata' :poobj='poobj'>
         </son-data>
     </div>
     <script>
-        // 父组件想子组件传递参数以属性方式传递
+        // 父组件向子组件传递参数以属性方式传递
         Vue.component('son-data', {
             //标签不能用驼峰命名法可用  - ，不区分小写，propos名字要用引号，propos中用需要将 - 转换为驼峰命名法 
-            props: ['fatherData', 'content', 'potr', 'ponum', 'poboo', 'poarr', 'poobj'],
+            props: ['fatherData', 'content', 'potr', 'ponum', 'poboo', 'poarr', 'poobj', 'hotdata'],
             data: function () {
                 return {
                     msg: '子组件的数据'
@@ -45,6 +45,13 @@
                            <li v-for='(value,key,index) in poobj'>{{index+"."+key+":"+value}}</li>  
                         <ul>
                     </div>
+                    //第二次练习数据
+                    <div>
+                        <li v-for='(value,key,index) in hotdata'>
+                            {{index}}.{{key}} :{{value}}   
+                            
+                        </li>
+                    </div>
                 </div>`
         })
         var vm = new Vue({
@@ -56,6 +63,12 @@
                     name: '小冰',
                     age: 18,
                     gender: 'girl',
+                },
+                hotdata: {
+                    str: '第二次练习数据：',
+                    num: 12,
+                    bool: true,
+                    arr: [1, 2, 3, 4]
                 }
             },
         })

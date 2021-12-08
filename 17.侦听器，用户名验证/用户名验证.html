@@ -11,21 +11,19 @@
 
 <body>
     <div id="app" style="margin-left:20px;">
-        用户名：<input type="text" v-focus placeholder="小冰" v-model.lazy='uname'><span v-color>{{tip}}</span>
+        用户名：<input type="text" v-focus placeholder="小冰" v-model.lazy='uname'><span v-color>{{utip}}</span>
+        密码：<input type="text" v-focus placeholder="000000" v-model.lazy='password'><span v-color>{{ptip}}</span>
+
     </div>
     <script>
-
-        // Vue.directive('focus', {
-        //     inserted: function (el) {
-        //         el.focus();
-        //     }
-        // })
 
         var vm = new Vue({
             el: '#app',
             data: {
                 uname: '',
-                tip: '',
+                password: '',
+                utip: '',
+                ptip: '',
                 color: 'green',
             },
             // 监听器
@@ -33,8 +31,12 @@
                 uname: function (val) {
                     //调用后台接口
                     this.checkName(val);
-                    this.tip = '正在验证....'
+                    this.utip = '正在验证....'
                 },
+                password: function (val) {
+                    this.checkPassword(val)
+                    this.ptip = '密码校验中....'
+                }
             },
             methods: {
                 checkName: function (uname) {
@@ -42,11 +44,25 @@
                     // 定时器模拟后台接口
                     setTimeout(function () {
                         if (uname == 'admin' | uname == '小冰') {
-                            that.tip = '用户名已被占用！';
+                            that.utip = '用户名已被占用！';
                             that.color = 'red'
                         }
                         else {
-                            that.tip = '用户名可用';
+                            that.utip = '用户名可用';
+                            that.color = 'green'
+                        }
+                    }, 2000)
+                },
+                checkPassword: function (pwd) {
+                    var that = this;
+                    // 定时器模拟后台接口
+                    setTimeout(function () {
+                        if (pwd !== '000000') {
+                            that.ptip = '密码错误！';
+                            that.color = 'red'
+                        }
+                        else {
+                            that.ptip = '密码正确，登录成功';
                             that.color = 'green'
                         }
                     }, 2000)
@@ -60,9 +76,9 @@
                     }
                 },
                 color: {
-                    inserted: function (el) {
+                    inserted: (el) => {
                         console.log(this.color);
-                        // el.style.color = 'red';
+                        el.style.color = this.color;
                     }
                 }
             },

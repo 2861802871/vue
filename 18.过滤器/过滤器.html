@@ -12,7 +12,8 @@
 <body>
     <div id="app">
         <div>{{msg|add}}</div>
-        <div>{{msg|add2}}</div>
+        <div>{{msg|two}}</div>
+        <div>{{msg|add3}}</div>
         <div>{{time | format('yyyy-MM-dd')}}</div>
     </div>
     <script>
@@ -20,6 +21,10 @@
         Vue.filter('add', function (data) {
             return ++data
         })
+        Vue.filter('two', function (data) {
+            return data + 2
+        })
+
         var vm = new Vue({
             el: '#app',
             data: {
@@ -28,16 +33,15 @@
             },
             // 局部过滤器
             filters: {
-                add2: function (data) {
-                    return 2 + data
+                add3: function (data) {
+                    return 3 + data
                 },
-                format: function (value, arg) {
+                format: function (value, arg) {//带参数的过滤器，携带的参数从第二个开始
                     if (arg == 'yyyy-MM-dd') {
                         var y = value.getFullYear();
                         var M = value.getMonth() + 1;
                         var d = value.getDate();
                         return y + '-' + M + '-' + d
-
                     }
 
                 }

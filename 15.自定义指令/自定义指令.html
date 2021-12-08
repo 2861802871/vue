@@ -9,31 +9,41 @@
 
 <body>
   <div id="app">
-    <input type="text" v-focus v-block='{block:"block"}'>
+    v-focus不带参数的指令
+    <input type="text" v-focus v-text_color='{color:"red"}' v-block='{block:"block"}'>
     // 自定义带参数的指令用法
-    <input type="text" v-focus v-color='msg' v-block='{block:"block"}'>
-    <input type="text" v-focus v-color='{color:"red"}' v-block='{block:"block"}'>
-    <input type="text" v-focus v-tcolor='{color:"white"}' v-block='{block:"block"}' v-color='{color:"green"}'>
+    <input type="text" v-Csolor='msg' v-block='{block:"block"}'>
+    <input type="text" v-color='{color:"red"}' v-block='{block:"block"}'>
+    <input type="text" v-tcolor='{color:"white"}' v-block='{block:"block"}' v-color='{color:"green"}'>
 
 
   </div>
   <script type="text/javascript" src="./lib/vue.min.js  "></script>
   <script type="text/javascript">
     // 自定义指令
-    Vue.directive('focus', {
+    Vue.directive('focus', {//el所绑定时的元素
       inserted: function (el) {
-        el.focus();
+        el.focus()
       }
     })
     // 自定义带参数的指令
+    //设置背景颜色
     Vue.directive('color', {
       inserted: function (el, data) {
-        // 根据指令参数设置背景色
-        el.style.backgroundColor = data.value.color;
+        el.style.backgroundColor = data.value.color
+        console.log('全局带参数指令');
         console.log(data.value.color);
         console.log(data.name);
       }
     })
+    //设置文本颜色
+    Vue.directive('text_color', {
+      inserted: (el, data) => {
+        el.style.color = data.value.color
+      }
+    })
+
+
     //表单基本操作
     var vm = new Vue({
       el: '#app',
@@ -46,10 +56,12 @@
       },
       // 自定义局部指令
       directives: {
-        // 指令不能大写？
+        // 指令不能大写，在HTML中大写将转换为小写,如果大写使用时也相当于用小写
         color: {
           inserted: function (el, data) {
-            el.style.backgroundColor = data.value.color;
+            el.style.backgroundColor = data.value.color
+            console.log('局部带参数指令');
+
           }
         },
         // 转换块元素
@@ -60,8 +72,9 @@
 
           }
         },
+        //文本颜色directives;inserted;inserted或bind
         tcolor: {
-          inserted: function (el, data) {
+          bind: function (el, data) {
             el.style.color = data.value.color
           }
         }

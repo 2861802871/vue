@@ -24,12 +24,14 @@
 <body>
   <div id="app">
     <form action="http://itcast.cn">
+      <!-- 单行文本 -->
       <div>
         <span>姓名：</span>
         <span>
           <input type="text" v-model='uname'>
         </span>
       </div>
+      单选：radio
       <div>
         <span>性别：</span>
         <span>
@@ -40,7 +42,6 @@
         </span>
       </div>
       单选用数，多选用数组
-
       <div>
         <span>爱好：</span>
         <input type="checkbox" id="ball" value="1" v-model='hobby'>
@@ -55,7 +56,7 @@
       单选用数，多选用数组
       <div>
         <span>职业：</span>
-        <!-- multiple='ture' 改为多选 -->
+        <!-- multiple='ture' 简写：multiple省掉默认值都为true  将单选改为多选 -->
         <select v-model='occupation'>
           <option value="0">请选择职业...</option>
           <option value="1">软件工程师</option>
@@ -84,8 +85,8 @@
         gender: 1,
         hobby: ['1', '2', '3'],
         // 单选用数，多选用数组
-        occupation: 3,
-        // occupation: ['1', '2',],
+        occupation: 3,//单选
+        // occupation: ['1', '2'],//多选
         desc: '姓名：小冰\n体重：45kg\n'
       },
       methods: {
@@ -93,6 +94,7 @@
 
           console.log(this.uname)
           console.log(this.gender == 0 ? '男' : '女')
+          //toString去掉末尾字符
           console.log(this.hobby.toString())
           console.log(this.occupation.toString())
           console.log(this.desc)

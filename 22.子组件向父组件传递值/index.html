@@ -19,14 +19,15 @@
         <div>一、直接操作数据</div>
         父组件中使用被组组件传递的参数
         <div :style="{fontSize:fontsize+'px'}">{{pmsg}}:</div>
-        <ul>
+        <ul>//父组件中遍历对象
             <li v-for='item in fruit'>{{item}}</li>
         </ul>
-        事件监听放在子组件标签中：监听enlarge-text事件
-        <son :fruit='fruit' @enlarge-text='handle($event)'></son>
+        <li v-for='item in xiaobing'>{{item}}</li>
+        事件监听放在子组件标签中：监听enlarge-text事件是否被触发(事件名和已有数据名不能重复)
+        <son :fruit='fruit' @enlarge-text='handle($event)' @xiaobings='xiaobings($event)'></son>
     </div>
     <script>
-        // props单向数据流只允许父组件向子组件传递数据
+        // props单向数据流只允许父组件向子组件传递数据（单向数据流）
         // 1.直接操作修改父组件数据（不推荐）
         Vue.component('son', {
             props: ['fruit'],
@@ -38,13 +39,14 @@
             template: `
             <div>
                 <div>{{smsg}}</div>
-                <ul>
+                <ul>//子组件中遍历对象
                     <li v-for='item in fruit'>{{item}}:</li>
                 </ul>
                 <button @click='fruit.push("柠檬")'>添加</button>
                 <div>
                     <div>二、通过添加自定义事件的方式</div>
-                    <button @click='$emit("enlarge-text",0.5)'>扩大父组件中的字体大小</button>    
+                    <button @click='$emit("enlarge-text",0.5)'>扩大父组件中的字体大小</button>  
+                    <button @click='$emit("xiaobings",9)'>传输对象</button>  
                 </div>
             </div>
             `
@@ -57,10 +59,14 @@
                 pmsg: '父组件中的数据',
                 fruit: ['苹果', '橘子', '橙子', '南果梨'],
                 fontsize: 15,
+                xiaobing: [4, 5]
             },
             methods: {
                 handle: function (event) {
                     this.fontsize += event;
+                },
+                xiaobings: function (event) {
+                    this.xiaobing.push(event)
                 }
             }
         })

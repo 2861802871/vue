@@ -20,12 +20,17 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                msg: '王八犊子'
+                msg: '1234'
             },
             methods: {},
+
+            //计算属性返回处理结果，类似methods
+            // 计算属性和方法的区别
+            // 1.计算属性是基于他们的依赖进行缓存，相同的计算只进行一次。后续调用缓存即可。（用于复杂重复的计算）
+            // 2.方法不存在缓存每次都是重新计算
             computed: {
-                reverseString: function (event) {
-                    return this.msg.split('').reverse().join('');
+                reverseString: function (data) {
+                    return this.msg.split('').reverse().join('')
                 }
             }
         })

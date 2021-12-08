@@ -43,7 +43,7 @@
                         return alert('内容为空！');
                     }
                     this.fruit.push(this.fruitName)
-                    this.fruitName = ''
+                    this.fruitName = ''//添加完成清空表单
                 },
                 del: function () {
                     if (this.fruit == '') {
@@ -53,7 +53,7 @@
                 },
                 // 替换完成后需要重新赋值给原数组
                 change: function () {
-                    this.fruit = this.fruit.slice(0, 2)
+                    this.fruit = this.fruit.slice(0, 1)
                 }
             }
         });

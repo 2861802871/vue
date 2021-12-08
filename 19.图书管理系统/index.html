@@ -147,7 +147,7 @@
                     if (this.id == '' | this.name == '' | this.author == '') {
                         return alert('信息不全！')
                     }
-                    if (this.flag) {
+                    if (this.flag) {//flag判断添加还是修改
                         // 重难点  some()遍历数组，筛选出id和输入域中id相等的数组对象
                         //=>表达主体 让this.id指向 add的id
                         this.books.some((item) => {
@@ -157,7 +157,6 @@
 
                                 // 匹配到合适的,跳出循环
                                 return true;
-
                             }
                         })
                         this.flag = false;
@@ -168,6 +167,7 @@
                         book.id = this.id;
                         book.name = this.name;
                         book.author = this.author;
+                        book.date = new Date();
                         this.books.push(book);
 
                         // 简写
@@ -188,7 +188,7 @@
                     var book = this.books.filter(function (item) {
                         return item.id == id
                     })
-                    // 将数据填入输入域中
+                    // 将数据填入输入域中book[0]符合条件的第项数据
                     console.log(book);
                     this.id = book[0].id;
                     this.name = book[0].name;
@@ -207,7 +207,6 @@
                     //-----------------------------------------
 
                     // 方法二：filter()方法 (新建一个数组，不改变原来数组) 排除要删除的，保留不删除的
-
                     this.books = this.books.filter(function (item) {
                         return item.id != id
                     })

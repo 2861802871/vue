@@ -12,9 +12,6 @@
             margin: 0;
         }
 
-        /* #box {
-            border: 2px green solid;
-        } */
         ::-webkit-scrollbar {
 
             display: none;
@@ -44,7 +41,6 @@
 
         .imgStyle {
             display: none;
-
         }
 
         .current {
@@ -63,6 +59,7 @@
             <!-- <li>orgin</li>
             <li>lemon</li> -->
         </ul>
+        <!-- 进行属性绑定之后才可以用数据替换 cureent显示图片的样式-->
         <div class="imgStyle" :key='item.id' v-for='(item,index) in list' :class='index==currentIndex?"current":""'>
             <img v-bind:src="item.path" alt="">
         </div>

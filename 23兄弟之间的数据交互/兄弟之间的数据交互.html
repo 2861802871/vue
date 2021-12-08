@@ -11,11 +11,10 @@
 
 <body>
     <div id="app">
-        <div>{{pmsg}}</div>
+        <div>{{msg}}</div>
         <div><button @click='handle("已销毁点击无效")'>销毁事件</button></div>
-        <first-borther></first-borther>
-        <second-borther></second-borther>
-        <div>{{data}}</div>
+        <first></first>
+        <second></second>
     </div>
     <script>
         // 通过事件中心通信var eventHub = new Vue()
@@ -27,79 +26,164 @@
         // // 触发
         // eventHub.$emit('name', data)
 
-        var eventHub = new Vue();
+        // var eventHub = new Vue();
 
-        Vue.component('FirstBorther', {
+        // Vue.component('FirstBorther', {
+        //     data: function () {
+        //         return {
+        //             fmsg: '第一个兄弟的数据',
+        //             num: 0
+        //         }
+        //     },
+        //     template: `
+        //     <div>
+        //     <div>{{fmsg}}</div>
+        //     <div>一：{{num}}</div>
+        //     <button @click='handle'>点击二+2</button>
+        //     </div>
+        //     `,
+        //     methods: {
+        //         handle: function () {
+        //             eventHub.$emit('second', 2)
+
+        //         }
+        //     },
+        //     mounted: function () {
+        //         eventHub.$on('first', (value) => {
+        //             this.num += value;
+        //         })
+        //     }
+        // });
+
+
+
+        // Vue.component('SecondBorther', {
+        //     data: function () {
+        //         return {
+        //             smsg: '第二个兄弟的数据',
+        //             num: 0
+        //         }
+        //     },
+        //     template: `
+        //     <div>
+        //     <div>{{smsg}}</div>
+        //     <div>二：{{num}}</div>
+        //     <button @click='handle'>点击一+1</button>
+        //     </div>
+        //     `,
+        //     methods: {
+        //         handle: function () {
+        //             // 触发兄弟监听事件
+        //             eventHub.$emit('first', 1)
+        //         }
+        //     },
+        //     mounted: function () {
+        //         // 监听事件
+        //         eventHub.$on('second', (value) => {
+        //             this.num += value;
+        //         })
+        //     }
+        // });
+
+        // var vm = new Vue({
+        //     el: '#app',
+        //     data: {
+        //         pmsg: '父级的数据',
+        //         data: ''
+        //     },
+        //     methods: {
+        //         handle: function (val) {
+        //             this.data = val;
+        //             eventHub.$off('first');
+        //             eventHub.$off('second');
+        //         }
+
+        //     },
+        // })
+
+        // 通过事件中心通信var eventHub = new Vue()
+        // var enentHub = new Vue();
+        // // 新建监听事件
+        // eventHub.$on('name', data)
+        // // 销毁
+        // eventHub.$off('name')
+        // // 触发
+        // eventHub.$emit('name', data)
+
+        var eventHub = new Vue()//事件中心
+        Vue.component('first', {
             data: function () {
                 return {
-                    fmsg: '第一个兄弟的数据',
+                    msg1: '组件1',
                     num: 0
                 }
             },
             template: `
             <div>
-            <div>{{fmsg}}</div>
-            <div>一：{{num}}</div>
-            <button @click='handle'>点击二+2</button>
+                <div>{{msg1}}={{num}}</div>
+                <div>
+                    <button @click='handle'>点击</button>
+                <div>
             </div>
             `,
             methods: {
                 handle: function () {
-                    eventHub.$emit('second', 2)
-
+                    // 触发对方second事件
+                    eventHub.$emit('second', 1)
                 }
             },
+            // 模板就绪触发钩子函数mounted
+            // 监听事件
             mounted: function () {
-                eventHub.$on('first', (value) => {
-                    this.num += value;
+                eventHub.$on('first', (val) => {
+                    this.num += val
                 })
             }
-        });
+        })
 
 
 
-        Vue.component('SecondBorther', {
+        Vue.component('second', {
             data: function () {
                 return {
-                    smsg: '第二个兄弟的数据',
+                    msg2: '组件2',
                     num: 0
                 }
             },
             template: `
             <div>
-            <div>{{smsg}}</div>
-            <div>二：{{num}}</div>
-            <button @click='handle'>点击一+1</button>
+                <div>{{msg2}}={{num}}</div>
+                <div>
+                    <button @click='handle'>点击</button>
+                <div>
             </div>
             `,
             methods: {
                 handle: function () {
-                    // 触发兄弟监听事件
-                    eventHub.$emit('first', 1)
+                    // 触发对方first事件
+                    eventHub.$emit('first', 2)
                 }
             },
+            // 模板就绪触发钩子函数mounted
             mounted: function () {
                 // 监听事件
-                eventHub.$on('second', (value) => {
-                    this.num += value;
+                eventHub.$on('second', (val) => {
+                    this.num += val
                 })
             }
-        });
+        })
 
         var vm = new Vue({
             el: '#app',
             data: {
-                pmsg: '父级的数据',
-                data: ''
+                msg: '兄弟组件之间数据传输'
             },
             methods: {
-                handle: function (val) {
-                    this.data = val;
-                    eventHub.$off('first');
-                    eventHub.$off('second');
+                handle: function () {
+                    eventHub.$off('first')
+                    eventHub.$off('second')
                 }
-
-            },
+            }
         })
     </script>
 </body>
