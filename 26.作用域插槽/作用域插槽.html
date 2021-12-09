@@ -18,12 +18,17 @@
     <div id="app">
         <div>{{msg}}</div>
         <div>父组件对子组件的内容加工处理</div>
-        <div>获取slot :data='item'中绑定的值</slot>
+        <div>获取slot标签中 :data='item'中绑定的值</slot>
         </div>
-        <son :fruit='fruit'>
-            <template slot-scope='da'>
-                <strong v-if='da.data.id==2' class='current'>{{da.data.id+da.data.name}}</strong>
-                <strong v-else>{{da.data.id+da.data.name}}</strong>
+        <son :fruit='fruit' :cat='cat'>
+            <!-- 获取子组件中slot标签绑定的属性值（数据） 再讲获取到的数据进行处理（讲符合条件的高亮显示其余普通显示）-->
+            <template slot-scope='slotProps'>
+                <!-- 如果获取到slot中数据的id等于二，高亮显示（添加高亮显示的类名） -->
+                <strong v-if='slotProps.data.id==2' class='current'>{{slotProps.data.id+slotProps.data.name}}</strong>
+                <strong v-else>{{slotProps.data.id+slotProps.data.name}}</strong>
+
+                <!-- <strong v-if='slotProps.cat.id==2' class='current'>{{slotProps.cat.id+slotProps.cat.name}}</strong>
+                <strong v-else>{{slotProps.cat.id+slotProps.cat.name}}</strong> -->
             </template>
 
         </son>
@@ -31,7 +36,7 @@
     <script>
 
         Vue.component('son', {
-            props: ['fruit'],
+            props: ['fruit', 'cat'],
             data: function () {
                 return {
                     msg: '子组件',
@@ -40,17 +45,22 @@
             template: `
             <div>
                 <div>{{msg}}</div>
-                <li style="list-style:none" :key='index' v-for='(item,index) in fruit'>
+                <li style="list-style:none" :key='item.id' v-for='(item,index) in fruit'>
                     <slot :data='item'>{{index+'.'+item.name}}</slot>    
-                </li>    
-            </div>
+                </li> 
+
+                <!--<li style="list-style:none" :key='item.id' v-for='(item,index) in cat'>
+                    <slot :cat='item'>{{index+'.'+item.name}}</slot>    
+                </li> --!>
+            </div>   
             `
         })
         var vm = new Vue({
             el: '#app',
             data: {
                 msg: '父组件',
-                fruit: [{ id: 1, name: '苹果' }, { id: 2, name: '橘子' }, { id: 3, name: '橙子' }]
+                fruit: [{ id: 1, name: '苹果' }, { id: 2, name: '橘子' }, { id: 3, name: '橙子' }],
+                cat: [{ id: 1, name: 'mao' }, { id: 2, name: 'cxk' }, { id: 3, name: 'dog' }]
             },
         })
     </script>

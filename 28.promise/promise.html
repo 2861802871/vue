@@ -10,18 +10,24 @@
 
 <body>
     <script>
+        // resolve成功,reject失败
         var p = new Promise(function (resolve, reject) {
             setTimeout(function () {
-                var flag = false;
-                if (flag) { console.log('hello word'); }
-                else { console.log('错误!'); }
+                var flag = true;
+                reject('hello p')
+                if (flag) { resolve('hello') }
+                else { reject('错误') }
             }, 1000)
         });
-        p.then(function (data) {
-            console.log(data);
-        }), function (info) {
-            console.log(info);
-        }
+        p.then(
+            function (data) {//p.then用用两个函数接收成功和失败的数据并加以处理
+                console.log(data);
+            },
+            function (info) {
+                console.log(info);
+            }
+        )
+
 
     </script>
 </body>

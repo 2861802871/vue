@@ -13,6 +13,8 @@
     <strong>高亮标签</strong>
     <alert-box>父组件模板中的内容将会传给子组件</alert-box>
     <alert-box></alert-box>
+    <br>
+    <son-box>父组件中的值</son-box>
 
 </div>
 <script>
@@ -21,7 +23,7 @@
     Vue.component('alert-box', {
         data: function () {
             return {
-                msg: '子组件中的数据'
+                msg: '子组件中的数据：'
             }
         },
         template: `
@@ -31,7 +33,18 @@
         </div>
         `
     })
-
+    Vue.component('son-box', {
+        data: function () {
+            return {
+                msg: "第二次练习"
+            }
+        },
+        template:
+            `<div>
+            <div>{{msg}}</div>
+            <slot></slot>
+        </div>`
+    })
     var vm = new Vue({
         el: '#app',
         data: {

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.min.js"></script>
+</head>
+
+<body>
+    <script>
+        function queryDAta(url) {
+            var p = new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject('服务器异常！')
+                    }
+                }
+                xhr.open('get', url);
+                xhr.send(null);
+            });
+            return p;//调用函数就相当于p.()
+        }
+        queryDAta('http://localhost:3000/data')
+            .then(
+                function (data) {
+                    console.log(data);
+                    return data
+                })
+            .then(function (data) {
+                console.log(data);
+                return 'hello'
+            })
+            .then(function (data) {
+                console.log(data);
+            })
+    </script>
+</body>
+
+</html>

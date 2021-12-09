@@ -5,13 +5,17 @@
   <meta charset="UTF-8">
   <title>购物车</title>
   <style type="text/css">
+    body {
+      background-color: rgb(208, 236, 232);
+    }
+
     .container .cart {
       width: 300px;
       margin: auto;
     }
 
     .container .title {
-      background-color: lightblue;
+      background-color: rgb(17, 137, 177);
       height: 40px;
       line-height: 40px;
       text-align: center;
@@ -19,7 +23,7 @@
     }
 
     .container .total {
-      background-color: #FFCE46;
+      background-color: rgb(17, 137, 177);
       height: 50px;
       line-height: 50px;
       text-align: right;
@@ -27,14 +31,14 @@
 
     .container .total button {
       margin: 0 10px;
-      background-color: #DC4C40;
+      background-color: #209da1;
       height: 35px;
       width: 80px;
       border: 0;
     }
 
     .container .total span {
-      color: red;
+      color: rgb(3, 14, 65);
       font-weight: bold;
     }
 
@@ -42,7 +46,7 @@
       height: 55px;
       line-height: 55px;
       position: relative;
-      border-top: 1px solid #ADD8E6;
+      border-top: 1px solid rgb(17, 137, 177);
     }
 
     .container .item img {
@@ -85,13 +89,13 @@
       right: 0px;
       width: 40px;
       text-align: center;
-      font-size: 40px;
+      font-size: 20px;
       cursor: pointer;
-      color: red;
+      color: rgb(248, 128, 98);
     }
 
     .container .item .del:hover {
-      background-color: orange;
+      background-color: lightgray;
     }
   </style>
 </head>
@@ -113,35 +117,36 @@
     //   })
     // }
     // daaa();
-
+    //标题组件
     var CartTitle = {
       props: ['uname'],
       template: `
         <div class="title">{{uname}}的购物车</div>
       `
     }
+    //列表组件
     var CartList = {
       props: ['list'],
       template: `
         <div>
-          <div :key=item.id class="item" v-for='(item,index) in list'>
+          <div :key="item.id" class="item" v-for='(item,index) in list'>
             <img :src="item.img"/>
             <div class="name">{{item.name}}</div>
             <div class="change">
-              <a href="javacript:;" @click.prevent="sub(item.id)">－</a>
+              <a href="javacript:;" @click.prevent="sub(item.id)">-</a>
                 <input type="text" class="num" :value='item.num' @blur='changeNum(item.id,$event)'/>
-              <a href="javacript:;" @click.prevent="add(item.id)">＋</a>
+              <a href="javacript:;" @click.prevent="add(item.id)">+</a>
             </div>
             <div class="del" @click='del(item.id)'>×</div>
           </div>
         </div>
       `,
       methods: {
-        del: function (id) {
+        del: function (id) {//删除操作在父组件中完成这里只需要出发在父组件中定义的事件告诉父组件删除哪个数据，父组件中用$event接收数据
           this.$emit('cart-del', id)
         },
         changeNum: function (id, event) {
-          console.log(id, event.target.value);
+          console.log(id, event.target.value);//接收数据对象，并获取事件对象的值
           this.$emit('change-num', {
             id: id,
             num: event.target.value,
@@ -164,6 +169,7 @@
       },
 
     }
+    //结算组件
     var CartTotal = {
       props: ['list'],
       template: `
@@ -183,6 +189,7 @@
         }
       }
     }
+    //三个子组件的父组件
     Vue.component('my-cart', {
       data: function () {
         return {
@@ -237,9 +244,10 @@
       },
       methods: {
         delCart: function (id) {
-          var index = this.list.findIndex(function (item) {
+          var index = this.list.findIndex(function (item) {//findIndenx查找list中id等于子组件中返回的id的数据的索引
             return item.id == id
           })
+          //从索引为index开始往后删除一个数据
           this.list.splice(index, 1)
         },
         changeNum: function (event) {
