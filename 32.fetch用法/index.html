@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.min.js"></script>
+</head>
+
+<body>
+    <script>
+
+        fetch('http://localhost:3000/fdata')
+            .then((data) => {
+                return data.text()//text()属于fetchAPI的一部分，返回一个Promise的一个实例对象,用于获取后台返回的数据
+            })
+            .then((data) => {
+                console.log(data);
+            })
+
+
+        // fetch参数传递delete
+        fetch('http://localhost:3000/fdelete/123',
+            { method: 'delete' })
+            .then((data) => {
+                return data.text()//text()属于fetchAPI的一部分，返回一个Promise的一个实例对象,用于获取后台返回的数据
+            })
+            .then((data) => {
+                console.log(data);
+            })
+
+        axios.delete(`http://localhost:3000/fdelete`, { params: { id: 666 } })
+            .then(ret => {
+                return ret.data//text()属于fetchAPI的一部分，返回一个Promise的一个实例对象,用于获取后台返回的数据
+            })
+            .then((data) => {
+                console.log(data);
+            })
+
+        // post(可以是json格式  的数据，也可是表单数据（x-www-from-urlencodedvc）)
+        axios.post('http://localhost:3000/fpost/',
+            { params: { uname: 'xiaobing', age: 18 } })
+            .then((data) => {
+                return data.text()//text()属于fetchAPI的一部分，返回一个Promise的一个实例对象,用于获取后台返回的数据
+            })
+            .then((data) => {
+                console.log(data);
+            })
+    </script>
+</body>
+
+</html>

@@ -24,7 +24,9 @@ app.all("*", function (req, res, next) {
 app.get('/', (req, res) => res.send('<h1>我是服务端渲染</h1>'))
 
 app.get('/data', (req, res) => {
-    res.send('get请求成功1！')
+    setTimeout(function () {//加入延时
+        res.send('get请求成功1！')
+    }, 2000)
 })
 app.get('/data1', (req, res) => {
     res.send('get请求成功2！')
@@ -32,6 +34,30 @@ app.get('/data1', (req, res) => {
 app.get('/data2', (req, res) => {
     res.send('get请求成功3！')
 })
+
+
+// fetchAPI 
+
+app.get('/fdata', (req, res) => {
+    res.send('fetch成功')
+})
+
+app.delete('/fdelete/:id', (req, res) => {
+    res.send('delete请求参数' + req.params.id)
+})
+app.delete('/fdelete/', (req, res) => {
+    res.send('delete请求参数' + req.query.id)
+})
+
+app.post('/fpost/', (req, res) => {
+    res.send('delete请求参数' + req.body.id)
+})
+
+// 返回数据类型练习
+app.get('/callbackdata', (req, res) => {
+    res.json({ uname: 'xiaobing', age: 18 })
+})
+
 
 // 监听当前3000端口号 开启服务
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
