@@ -18,6 +18,11 @@
                 console.log(ret.data.uname);//数据  
             })
 
+        // post请求
+        axios.get('http://localhost:3000/callbackdata', { name: 'zaobiag' })
+            .then(ret => {
+                console.log(ret);
+            })
         // 设置默认地址
         axios.defaults.baseURL = 'http://127.0.0.1:3000/'//后续发请求只需要写地址即可
         axios.get('/callbackdata').then(ret => {

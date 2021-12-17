@@ -52,12 +52,29 @@ app.delete('/fdelete/', (req, res) => {
 app.post('/fpost/', (req, res) => {
     res.send('delete请求参数' + req.body.id)
 })
-
+// 拦截器
+app.get('/intercetors', (req, res) => {
+    res.send('intercetirs拦截器')
+})
 // 返回数据类型练习
 app.get('/callbackdata', (req, res) => {
     res.json({ uname: 'xiaobing', age: 18 })
 })
 
+//async接口调用 
+app.get('/async1', (req, res) => {
+    res.send('async1')
+})
+app.get('/async2', (req, res) => {
+    setTimeout(function () {
+        res.send('async2')
+    }, 2000)
+})
+app.get('/async3', (req, res) => {
+    console.log(123);
+    if (req.query.id == 'async2') { res.send('接收到async2') }
+    else { res.send('error') }
+})
 
 // 监听当前3000端口号 开启服务
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port 127.0.0.1:${port}`))
