@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组操作</title>
+    <script src="./lib/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" @keyup.enter='add' v-model='fruitName'>
+        <button @click='add'>添加</button>
+        <button @click='del'>删除</button>
+        <button @click='change'>替换</button>
+        <ul>
+            <li v-for='(item,index) in fruit'>{{index+'.'+item}}</li>
+        </ul>
+
+        <ul>
+            <li>{{infor.name}}</li>
+            <li>{{infor.age}}</li>
+            <li>{{infor.phone}}</li>
+            <li>{{infor.QQ}}</li>
+        </ul>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                fruitName: '',
+                fruit: ['苹果', '橘子', '菠萝'],
+                infor: {
+                    name: '小冰',
+                    age: 18,
+                }
+            },
+            methods: {
+                add: function () {
+                    if (this.fruitName == '') {
+                        return alert('内容为空！');
+                    }
+                    this.fruit.push(this.fruitName)
+                    this.fruitName = ''//添加完成清空表单
+                },
+                del: function () {
+                    if (this.fruit == '') {
+                        return alert('已全部删除！')
+                    }
+                    this.fruit.pop();
+                },
+                // 替换完成后需要重新赋值给原数组
+                change: function () {
+                    this.fruit = this.fruit.slice(0, 1)
+                }
+            }
+        });
+
+        // 数组
+        vm.fruit[0] = '索引方法修改，单独使用不是响应式'
+        Vue.set(vm.fruit, 0, 'Vue修改');
+        vm.$set(vm.fruit, 1, 'vm修改');
+
+        // 对象
+        vm.infor.QQ = 12345678;//不是响应式
+        Vue.set(vm.infor, 'phone', 13118503854)
+        vm.$set(vm.infor, 'QQ', 2114902263)
+
+    </script>
+</body>
+
+</html>

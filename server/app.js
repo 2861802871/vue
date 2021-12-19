@@ -71,9 +71,7 @@ app.get('/async2', (req, res) => {
     }, 2000)
 })
 app.get('/async3', (req, res) => {
-    console.log(123);
-    if (req.query.id == 'async2') { res.send('接收到async2') }
-    else { res.send('error') }
+    res.send('async3')
 })
 
 // 监听当前3000端口号 开启服务

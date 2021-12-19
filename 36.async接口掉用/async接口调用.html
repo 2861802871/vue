@@ -18,14 +18,13 @@
             console.log(asynca);
             const asyncb = await axios.get('async2')
             console.log(asyncb);
-            const asyncc = await axios.get('async3' + asyncb.data)
-            console.log(asyncc.data);
+            const asyncc = await axios.get('async3')
+            console.log(asyncc);
             return asyncc
         }
-        adata()
-        // adata().then(function (data) {
-        //     console.log(data);
-        // })
+        adata().then(function (ret) {
+            console.log(ret.data);
+        })
     </script>
 </body>
 
