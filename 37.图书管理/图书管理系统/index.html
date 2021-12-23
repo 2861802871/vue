@@ -168,15 +168,20 @@
                     if (this.flag) {//flag判断添加还是修改
                         // 重难点  some()遍历数组，筛选出id和输入域中id相等的数组对象
                         //=>表达主体 让this.id指向 add的id
-                        this.books.some((item) => {
-                            if (item.id == this.id) {
-                                item.name = this.name;
-                                item.author = this.author;
+                        // this.books.some((item) => {
+                        //     if (item.id == this.id) {
+                        //         item.name = this.name;
+                        //         item.author = this.author;
 
-                                // 匹配到合适的,跳出循环
-                                return true;
-                            }
-                        })
+                        //         // 匹配到合适的,跳出循环
+                        //         return true;
+                        //     }
+                        // })
+
+                        // 向数据库提交修改的图书信息
+                        var ret = await axios.put('books/' + this.id, { name: this.name, author: this.author })
+                        if (ret.status == 200) { console.log('修改图书成功！ '); }
+                        this.queryData()//刷新重新加载数据
                         this.flag = false;
                     } else {
                         // 添加图书对象
@@ -211,20 +216,30 @@
                     this.name = '';
                     this.author = '';
                 },
-                toEdit: function (id) {
+                toEdit: async function (id) {
+
                     // 重难点  filter(function(){条件})
-                    var book = this.books.filter(function (item) {
-                        return item.id == id
-                    })
+                    // var book = this.books.filter(function (item) {
+                    //     return item.id == id
+                    // })
                     // 将数据填入输入域中book[0]符合条件的第项数据
-                    console.log(book);
-                    this.id = book[0].id;
-                    this.name = book[0].name;
-                    this.author = book[0].author;
-                    this.flag = true;
+                    // console.log(book);
+                    // this.id = book[0].id;
+                    // this.name = book[0].name;
+                    // this.author = book[0].author;
+                    // this.flag = true;
+
+                    // 将标志位改为修改图书信息标志
+                    this.flag = true
+                    // 根据id查询图书
+                    var ret = await axios.get('books/' + id)
+                    // 将查询到的数据填充到输入框
+                    this.id = ret.id
+                    this.name = ret.name
+                    this.author = ret.author
 
                 },
-                del: function (id) {
+                del: async function (id) {
                     // 方法一：在原来的数组中修改 findIndex()查找索引，splice()删除
                     // splice(位置，删除几个，添加的元素写在后面、。)
 
@@ -235,10 +250,16 @@
                     //-----------------------------------------
 
                     // 方法二：filter()方法 (新建一个数组，不改变原来数组) 排除要删除的，保留不删除的
-                    this.books = this.books.filter(function (item) {
-                        return item.id != id
-                    })
+                    // this.books = this.books.filter(function (item) {
+                    //     return item.id != id
+                    // })
 
+                    // 调用接口删除图书
+                    var ret = await axios.delete('books/' + id)
+                    if (ret.status == 200) {
+                        this.queryData()
+                        console.log('删除图书成功！');
+                    }
                 },
                 // 请求数据的方法 
                 queryData: async function () {
@@ -260,9 +281,9 @@
                     // var flag = this.books.some(function (item) {
                     //     return item.name == val;
                     // })
-                    var ret = await axios.get('books/book/name' + this.name)
-                    console.log(this.name);
-                    console.log('监听到name变化');
+                    var ret = await axios.get('books/book/' + this.name)
+                    // console.log(this.name);
+                    // console.log('监听到name变化');
                     if (ret.status === 1) {
                         this.submitFlag = true;
                     } else {
