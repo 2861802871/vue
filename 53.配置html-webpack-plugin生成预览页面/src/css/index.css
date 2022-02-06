@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #faf5b7;
+    background: url('../img/1.jpg')
+}
+
+body ul {
+    padding: 0;
+    margin: 0;
+}
+
+::placeholder {
+    color: red
+}
+
+.box {
+    width: 500px;
+    height: 380px;
+    background-color: greenyellow;
+    background: url('../img/2.png');
+}
